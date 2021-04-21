@@ -1,5 +1,5 @@
 import {User} from "discord.js";
-import {Command, NamedCommand, getMemberByName, CHANNEL_TYPE, RestCommand} from "../../core";
+import {Command, NamedCommand, getUserByNickname, RestCommand} from "onion-lasers";
 
 // Quotes must be used here or the numbers will change
 const registry: {[id: string]: string} = {
@@ -37,7 +37,10 @@ const registry: {[id: string]: string} = {
     "367439475153829892": "A weeb.",
     "760375501775700038": "˙qǝǝʍ ∀",
     "389178357302034442": "In his dreams, he is the star. its him. <:itsMe:808174425253871657>",
-    "606395763404046349": "Me."
+    "606395763404046349": "Me.",
+    "237359961842253835": "Good question.",
+    "689538764950994990":
+        "The slayer of memes, a vigilante of the voidborn, and the self-proclaimed prophet of Xereptheí.\n> And thus, I shall remain dormant once more. For when judgement day arrives, those whose names are sung shall pierce the heavens."
 };
 
 export default new NamedCommand({
@@ -59,25 +62,24 @@ export default new NamedCommand({
             const id = user.id;
 
             if (id in registry) {
-                send(`\`${user.username}\` - ${registry[id]}`);
+                send(registry[id]);
             } else {
                 send(`\`${user.tag}\` hasn't been added to the registry yet!`);
             }
         }
     }),
     any: new RestCommand({
-        channelType: CHANNEL_TYPE.GUILD,
         async run({send, guild, combined}) {
-            const member = await getMemberByName(guild!, combined);
+            const user = await getUserByNickname(combined, guild);
 
-            if (typeof member !== "string") {
-                if (member.id in registry) {
-                    send(`\`${member.nickname ?? member.user.username}\` - ${registry[member.id]}`);
+            if (typeof user !== "string") {
+                if (user.id in registry) {
+                    send(registry[user.id]);
                 } else {
-                    send(`\`${member.nickname ?? member.user.username}\` hasn't been added to the registry yet!`);
+                    send(`\`${user.tag}\` hasn't been added to the registry yet!`);
                 }
             } else {
-                send(member);
+                send(user);
             }
         }
     })

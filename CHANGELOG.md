@@ -1,3 +1,10 @@
+# 3.2.2
+- Moved command handler code to [Onion Lasers](https://github.com/WatDuhHekBro/OnionLasers)
+- Reworked `poll`
+- Extended stream notifications feature
+- Fixed various bugs
+- Improved searching for users by name
+
 # 3.2.1
 - `vaporwave`: Transforms input into full-width text
 - `eco post`: A play on `eco get`
