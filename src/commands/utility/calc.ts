@@ -7,17 +7,19 @@ export default new NamedCommand({
     description: "Calculates a specified math expression.",
     run: "Please provide a calculation.",
     any: new RestCommand({
-        async run({send, combined}) {
+        async run({send, combined, channel}) {
             if (Config.wolfram === null) return send("There's no Wolfram token in the config.");
 
             const wClient = new WolframClient(Config.wolfram);
             let resp;
+
+            channel.sendTyping();
             try {
                 resp = await wClient.query(combined);
             } catch (e: any) {
                 return send("Something went wrong.");
             }
-
+            channel.sendTyping();
             if (!resp.data.queryresult.pods) return send("No pods were returned. Your query was likely invalid.");
             else {
                 // TODO: Please don't hardcode the pod to fetch, try to figure out
